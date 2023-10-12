@@ -8,16 +8,20 @@ url = 'https://api.nasa.gov/planetary/apod?' \
 response = requests.get(url)
 content = response.json()
 
+title = content['title']
 image_url = content['url']
+explanation = content['explanation']
+
 image_response = requests.get(image_url)
 
 #  Write image to the image.jpg file
 with open('image.jpg', 'wb') as file:
     file.write(image_response.content)
 
+# Create streamlit page with a wide layout
 st.set_page_config(layout='wide')
 
-st.title(content['title'])
+st.title(title)
 image = Image.open('image.jpg')
-st.image(image, caption=content['title'])
-st.write(content['explanation'])
+st.image(image, caption=title)
+st.write(explanation)
